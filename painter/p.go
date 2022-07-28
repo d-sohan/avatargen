@@ -1,13 +1,27 @@
 package painter
 
 import (
+	"errors"
 	"image"
 	"image/color"
 	"image/png"
 	"math/rand"
 	"os"
+	"strconv"
 	"time"
 )
+
+func hexToRGB(hexColor string) (color.Color, error) {
+	rhex, bhex, ghex := hexColor[0:2], hexColor[2:4], hexColor[4:6]
+	red, errRed := strconv.ParseUint(rhex, 16, 8)
+	green, errGreen := strconv.ParseUint(ghex, 16, 8)
+	blue, errBlue := strconv.ParseUint(bhex, 16, 8)
+	if errRed != nil || errGreen != nil || errBlue != nil {
+		return nil, errors.New("failed to parse hex color")
+	}
+	c := color.RGBA{uint8(red), uint8(green), uint8(blue), 0xff}
+	return c, nil
+}
 
 func paintBlock(img *image.RGBA, startX, startY, block int, c color.Color) {
 	if img.Bounds().Min.X > startX || img.Bounds().Min.Y > startY {
@@ -20,7 +34,20 @@ func paintBlock(img *image.RGBA, startX, startY, block int, c color.Color) {
 	}
 }
 
-func Paint(count, block int) {
+func Paint(count, block int, hexColor, output string) error {
+
+	// error if invalid hex color
+	colour, err := hexToRGB(hexColor)
+	if err != nil {
+		return err
+	}
+
+	// error if output path is invalid
+	f, perr := os.Create(output)
+	if perr != nil {
+		return perr
+	}
+
 	rand.Seed(time.Now().UnixNano())
 
 	border := block / 2
@@ -31,9 +58,6 @@ func Paint(count, block int) {
 	lowRight := image.Point{width, height}
 
 	img := image.NewRGBA(image.Rectangle{upLeft, lowRight})
-
-	// Colors are defined by Red, Green, Blue, Alpha uint8 values.
-	cyan := color.RGBA{100, 200, 200, 0xff}
 
 	// paint border
 	for x := 0; x < width; x++ {
@@ -51,7 +75,7 @@ func Paint(count, block int) {
 			y := border + j*block
 			if i <= (count-1)/2 {
 				if rand.Int63()%2 == 0 {
-					paintBlock(img, x, y, block, cyan)
+					paintBlock(img, x, y, block, colour)
 				} else {
 					paintBlock(img, x, y, block, color.White)
 				}
@@ -63,6 +87,5 @@ func Paint(count, block int) {
 	}
 
 	// Encode as PNG.
-	f, _ := os.Create("avatar.png")
-	png.Encode(f, img)
+	return png.Encode(f, img)
 }
