@@ -17,15 +17,15 @@ func main() {
 		switch s := strings.TrimSpace(v); {
 		case strings.HasPrefix(s, "--count="):
 			c, err := strconv.Atoi(s[len("--count="):])
-			if err != nil {
-				fmt.Println("avatargen -count=<block count>")
+			if err != nil || c <= 1 {
+				fmt.Println("avatargen -count=<block count at least 2>")
 				return
 			}
 			count = c
 		case strings.HasPrefix(s, "--size="):
 			sz, err := strconv.Atoi(s[len("--size="):])
-			if err != nil {
-				fmt.Println("avatargen -size=<block size>")
+			if err != nil || sz <= 1 {
+				fmt.Println("avatargen -size=<block size at least 2>")
 				return
 			}
 			size = sz
