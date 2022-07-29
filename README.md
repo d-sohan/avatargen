@@ -21,6 +21,6 @@ Output is `avatar.png`.
 |-------------------------------------------|-----------------------------------------------------------------------------|
 |`--count=<block count>`                    |   Number of blocks. Should be at least 2. By default, 5.                    |
 |`--size=<block size>`                      |   Size of each block in pixels. Should be at least 2. By default, 70.       | 
-|`--fgcolor=<hex value>`                    |   Color of each block in hex (000000-ffffff). By default, #64C8C8           |
-|`--bgcolor=<hex value>`                    |   Background color in hex (000000-ffffff). By default, #ffffff              |
-|`--output=<path>`                          |   Path of output file.By default, 'avatar.png' in the current directory     |
+|`--fgcolor=<hex value>`                    |   Color of each block in hex (000000-FFFFFF). By default, #64C8C8           |
+|`--bgcolor=<hex value>`                    |   Background color in hex (000000-FFFFFF). By default, #FFFFFF              |
+|`--output=<path>`                          |   Path of output file. By default, '_avatar.png_' in the current directory     |
