@@ -15,7 +15,8 @@ func help() {
 		"Options:\n",
 		"--count=<block count at least 2>\t number of blocks, default 5\n",
 		"--size=<block size at least 2>\t\t size of each block in pixels, default 70\n",
-		"--color=<hex value #000000 to #ffffff>\t color of each block, default #64C8C8\n",
+		"--fgcolor=<hex value #000000 to #ffffff>\t color of each block, default #64C8C8\n",
+		"--bgcolor=<hex value #000000 to #ffffff>\t color of background, default #ffffff\n",
 		"--output=<path of output image>\t default 'avatar.png' in the current directory",
 	)
 }
@@ -23,7 +24,7 @@ func help() {
 func main() {
 
 	count, size := 5, 70
-	color, output := "64c8c8", "avatar.png"
+	fgcolor, bgcolor, output := "64c8c8", "ffffff", "avatar.png"
 
 	for i, v := range os.Args {
 		switch s := strings.TrimSpace(v); {
@@ -41,15 +42,26 @@ func main() {
 				return
 			}
 			size = sz
-		case strings.HasPrefix(s, "--color="):
-			hc := s[len("--color="):]
+		case strings.HasPrefix(s, "--fgcolor="):
+			hc := s[len("--fgcolor="):]
 			if len(hc) == 7 && hc[0] == '#' {
 				hc = hc[1:]
 			}
 			if len(hc) == 6 && hc[0] != '#' {
-				color = strings.ToLower(hc)
+				fgcolor = strings.ToLower(hc)
 			} else {
-				fmt.Println("avatargen: --color=<hex value 000000 to ffffff>")
+				fmt.Println("avatargen: --fgcolor=<hex value 000000 to ffffff>")
+				return
+			}
+		case strings.HasPrefix(s, "--bgcolor="):
+			hc := s[len("--bgcolor="):]
+			if len(hc) == 7 && hc[0] == '#' {
+				hc = hc[1:]
+			}
+			if len(hc) == 6 && hc[0] != '#' {
+				bgcolor = strings.ToLower(hc)
+			} else {
+				fmt.Println("avatargen: --bgcolor=<hex value 000000 to ffffff>")
 				return
 			}
 		case strings.HasPrefix(s, "--output="):
@@ -65,7 +77,7 @@ func main() {
 		}
 	}
 
-	if err := painter.Paint(count, size, color, output); err != nil {
+	if err := painter.Paint(count, size, fgcolor, bgcolor, output); err != nil {
 		fmt.Println("avatargen:", err)
 	}
 

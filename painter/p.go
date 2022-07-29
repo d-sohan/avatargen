@@ -34,10 +34,16 @@ func paintBlock(img *image.RGBA, startX, startY, block int, c color.Color) {
 	}
 }
 
-func Paint(count, block int, hexColor, output string) error {
+func Paint(count, block int, hexColorFG, hexColorBG, output string) error {
 
 	// error if invalid hex color
-	colour, err := hexToRGB(hexColor)
+
+	colourFG, err := hexToRGB(hexColorFG)
+	if err != nil {
+		return err
+	}
+
+	colourBG, err := hexToRGB(hexColorBG)
 	if err != nil {
 		return err
 	}
@@ -63,7 +69,7 @@ func Paint(count, block int, hexColor, output string) error {
 	for x := 0; x < width; x++ {
 		for y := 0; y < height; y++ {
 			if l, r := border, border+count*block; x < l || x >= r || y < l || y >= r {
-				img.Set(x, y, color.White)
+				img.Set(x, y, colourBG)
 			}
 		}
 	}
@@ -75,9 +81,9 @@ func Paint(count, block int, hexColor, output string) error {
 			y := border + j*block
 			if i <= (count-1)/2 {
 				if rand.Int63()%2 == 0 {
-					paintBlock(img, x, y, block, colour)
+					paintBlock(img, x, y, block, colourFG)
 				} else {
-					paintBlock(img, x, y, block, color.White)
+					paintBlock(img, x, y, block, colourBG)
 				}
 			} else {
 				c := img.At(border+(count-i-1)*block, y)
