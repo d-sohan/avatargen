@@ -11,7 +11,7 @@ Output is `avatar.png`.
 ```
 ./avatargen --count=20 --size=30
 ```
-<p style="display:block; margin: 0 auto">
+<p align="center">
 <img src="./avatar.png" alt="avatar.png">
 </p>
 
