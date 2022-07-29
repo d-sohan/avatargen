@@ -9,9 +9,11 @@ Output is `avatar.png`.
 
 ### Example
 ```
-./avatargen --count=11 --size=20
+./avatargen --count=20 --size=30
 ```
-![avatar.png](./avatar.png)
+<p style="display:block; margin: 0 auto">
+<img src="./avatar.png" alt="avatar.png">
+</p>
 
 ## Options
 
