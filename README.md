@@ -1,4 +1,4 @@
-# Avatar-Generator
+# Avatar Generator
 Generates random avatars that _look like_ GitHub's identicons. These are **not** actual identicons (yet?)!
 
 ## Usage
